@@ -38,7 +38,7 @@ Read this first. It records what was decided, what is done and what is left, so 
 12. **Support wording**: never say "reaching out is up to you" or "you don't have to carry it alone". Say that a friend, a counselor or a doctor can help, and give a direction: look up support services where you live; in the US, call or text 988.
 7. **Not surveillance, not medical.** MoodCast never reports, notifies or contacts anyone. Avoid medical words (diagnose, screening, depression, checkup-as-medical). Use "mood light", "mood check-in", "wellbeing". Heavy entries: acknowledge pain + one line "call or text 988" (US standard chosen for the hackathon).
 8. Age: 18+, phrased as **Google's Gemini API terms require it**, not as MoodCast's own rule.
-9. Hackathon scope: passcode lock screen is in; **encryption of stored entries and an encrypted backup file are "next steps"**, not built.
+9. Hackathon scope: passcode lock screen is in (test version pre-fills passcode **1234** with a visible note, and the lock screen has **Start over**, which deletes local data); **a recovery code (no email, no account) is a next step** — the user agreed email recovery conflicts with the no-account design; **encryption of stored entries and an encrypted backup file are "next steps"**, not built.
 10. Chrome's on-device model supports English, Spanish, Japanese, German, French (not Chinese) → the hackathon build is **English**.
 11. Demo mode loads one sample week (fictional office worker, see `demo-data.js`) into last week, so judges see the light and forecast immediately.
 

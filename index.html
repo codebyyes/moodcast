@@ -66,9 +66,10 @@
 
       <h3>Set a passcode</h3>
       <p class="muted">The passcode stays on this device and locks your diary from anyone else who opens this browser. There is no account and no server copy, so a forgotten passcode cannot be recovered.</p>
+      <p class="test-note">Hackathon test version: the passcode is pre-filled as <b>1234</b> so you can come back later without forgetting it. You can change it if you like.</p>
       <div class="row">
-        <input type="password" id="newPass" inputmode="numeric" autocomplete="new-password" placeholder="Passcode (4+ characters)">
-        <input type="password" id="newPass2" inputmode="numeric" autocomplete="new-password" placeholder="Repeat passcode">
+        <input type="password" id="newPass" inputmode="numeric" autocomplete="new-password" placeholder="Passcode (4+ characters)" value="1234">
+        <input type="password" id="newPass2" inputmode="numeric" autocomplete="new-password" placeholder="Repeat passcode" value="1234">
       </div>
       <p id="setupError" class="error" hidden></p>
       <button id="startBtn" class="primary">Start my diary</button>
@@ -82,6 +83,8 @@
       <input type="password" id="unlockPass" inputmode="numeric" autocomplete="current-password" placeholder="Passcode">
       <p id="unlockError" class="error" hidden>That passcode doesn't match.</p>
       <button id="unlockBtn" class="primary">Unlock</button>
+      <p class="test-note">Hackathon test version: if you kept the suggested passcode, it is <b>1234</b>.</p>
+      <p class="muted small">Forgot your passcode? <button id="startOverBtn" class="linkish">Start over</button> (this deletes all entries on this device).</p>
     </section>
   </main>
 

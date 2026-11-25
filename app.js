@@ -640,6 +640,13 @@ function wire() {
   $("demoBtn").addEventListener("click", loadDemo);
   $("clearDemoBtn").addEventListener("click", clearDemo);
   $("lockBtn").addEventListener("click", () => showScreen("lock"));
+  $("startOverBtn").addEventListener("click", () => {
+    if (!confirm("Start over? This deletes every entry, forecast and your passcode on this device. This cannot be undone.")) return;
+    localStorage.removeItem(KEY);
+    db = { entries: {}, forecasts: {} };
+    showScreen("landing");
+  });
+
   $("wipeBtn").addEventListener("click", () => {
     if (!confirm("Delete every entry, forecast and your passcode from this browser? This cannot be undone.")) return;
     localStorage.removeItem(KEY);

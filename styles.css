@@ -1,0 +1,108 @@
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --ink: #1d2433;
+  --muted: #667085;
+  --line: #e3e7ef;
+  --accent: #3d6df2;
+  --accent-soft: #e8eefe;
+  --green: #2f9e60;
+  --yellow: #d99a00;
+  --red: #d64545;
+  --radius: 14px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; background: var(--card); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 5;
+}
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.2rem; }
+.logo { font-size: 1.5rem; }
+.ai-status { font-size: .85rem; color: var(--muted); text-align: right; }
+.screen { max-width: 760px; margin: 0 auto; padding: 16px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 16px;
+}
+.card.narrow { max-width: 380px; margin: 60px auto; }
+.center { text-align: center; }
+.center input { width: 100%; margin: 12px 0; }
+h1 { font-size: 1.5rem; margin: 0 0 12px; }
+h2 { font-size: 1.2rem; margin: 0 0 12px; }
+h3 { font-size: 1rem; margin: 18px 0 8px; }
+p { margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.strong { font-weight: 700; }
+.core { border-left: 4px solid var(--accent); padding-left: 12px; font-style: italic; }
+.promise { background: var(--accent-soft); border-color: #cdd9fb; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+.row.between { justify-content: space-between; }
+.check { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0; }
+.check input { margin-top: 5px; }
+input[type=password], input[type=date], textarea {
+  font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff;
+}
+.row input[type=password] { flex: 1; min-width: 180px; }
+textarea { width: 100%; resize: vertical; }
+button { font: inherit; border-radius: 10px; padding: 10px 16px; cursor: pointer; border: 1px solid transparent; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.primary { background: var(--accent); color: #fff; }
+.secondary { background: var(--accent-soft); color: var(--accent); border-color: #cdd9fb; }
+.ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.danger { background: #fff; color: var(--red); border-color: #f1c4c4; }
+.error { color: var(--red); }
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; }
+.tab { background: transparent; border: 1px solid var(--line); white-space: nowrap; }
+.tab.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.notice { background: #fff8e6; border-color: #f4dfa8; }
+progress { width: 100%; }
+.result .weather-line { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+.big-icon { font-size: 3rem; }
+.phrase { font-size: 1.2rem; font-weight: 600; }
+.chip { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 600; color: #fff; }
+.chip.green { background: var(--green); }
+.chip.yellow { background: var(--yellow); }
+.chip.red { background: var(--red); }
+.note { font-size: 1.05rem; background: var(--bg); padding: 12px 14px; border-radius: 10px; }
+.helpline { color: var(--red); font-weight: 600; }
+.footer-note { font-size: .85rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+.badge { display: inline-block; font-size: .75rem; color: var(--accent); background: var(--accent-soft); padding: 2px 10px; border-radius: 999px; }
+.picker { display: flex; gap: 8px; flex-wrap: wrap; }
+.picker button { background: var(--bg); border-color: var(--line); }
+.cal-head, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+.cal-head { font-size: .75rem; color: var(--muted); margin-bottom: 6px; }
+.cal-day { min-height: 58px; border: 1px solid var(--line); border-radius: 10px; padding: 4px; font-size: .75rem; background: #fff; cursor: pointer; }
+.cal-day.empty { border: none; background: transparent; cursor: default; }
+.cal-day .ic { display: block; font-size: 1.4rem; }
+.cal-day.today { border-color: var(--accent); }
+.compare { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.compare th, .compare td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+.week-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin: 10px 0; }
+.week-day { border: 1px solid var(--line); border-radius: 10px; padding: 6px 2px; font-size: .75rem; }
+.week-day .ic { font-size: 1.5rem; display: block; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-top: 2px; }
+.dot.green { background: var(--green); } .dot.yellow { background: var(--yellow); } .dot.red { background: var(--red); }
+.light { display: flex; gap: 14px; align-items: center; padding: 14px; border-radius: 12px; background: var(--bg); margin: 12px 0; }
+.lamp { width: 46px; height: 46px; border-radius: 50%; flex: none; box-shadow: 0 0 0 4px #fff inset; }
+.lamp.green { background: var(--green); } .lamp.yellow { background: var(--yellow); } .lamp.red { background: var(--red); } .lamp.none { background: #cfd5e1; }
+.digest-line { margin-bottom: 10px; }
+.digest-line label { font-size: .8rem; color: var(--muted); display: block; }
+.digest-line .row { margin: 4px 0; }
+.digest-line textarea { min-height: 54px; }
+.digest-warn { font-size: .8rem; color: var(--yellow); }
+.forecast { background: var(--accent-soft); padding: 14px; border-radius: 12px; margin-top: 12px; white-space: pre-wrap; }
+.sample { font-size: .7rem; color: var(--muted); }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: .9rem; max-width: 90%; z-index: 10; }
+@media (max-width: 520px) {
+  .cal-day { min-height: 46px; }
+  .cal-day .ic { font-size: 1.1rem; }
+}

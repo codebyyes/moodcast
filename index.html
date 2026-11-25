@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MoodCast · A private mood weather journal</title>
+  <meta name="description" content="Write your day. On-device AI reads it, names your mood weather and leaves a caring note. Your diary never leaves your device.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">🌦️</span>
+      <span class="name">MoodCast</span>
+    </div>
+    <div id="aiStatus" class="ai-status" role="status">Checking on-device AI…</div>
+  </header>
+
+  <!-- ONBOARDING -->
+  <main id="onboarding" class="screen" hidden>
+    <section class="card promise">
+      <h1>Our promise to you</h1>
+      <p>This is your diary, and it is private. MoodCast is a diary, not a medical service, and it takes no part in diagnosis or treatment. The AI reads your writing only to help you see your own state of mind.</p>
+      <p>Your diary is read on this device and never leaves it. Your weekly mood light is calculated on this device and is never sent anywhere. If you turn on the weekly forecast, only a short digest that you review goes to Gemini, and the report comes back to you alone.</p>
+      <p>Because of this, no one else will know when you are struggling. MoodCast will not call a helpline, contact anyone, or report anything on your behalf. When you notice that something is wrong, reaching out is up to you: a friend, a counselor or a doctor.</p>
+      <p class="strong">MoodCast is not surveillance software.</p>
+      <p class="core">AI may read your private writing, but reading is not ownership. It gives no right to further process, monitor or send your data.</p>
+    </section>
+
+    <section class="card">
+      <h2>Before you start</h2>
+      <label class="check"><input type="checkbox" id="agreePromise"> I have read and accept this promise.</label>
+      <label class="check"><input type="checkbox" id="agreeAge"> I am 18 or older. MoodCast uses the Gemini API, and Google's Gemini API terms require users to be 18 or older.</label>
+      <label class="check"><input type="checkbox" id="agreeLights"> I understand the weekly mood light is always on. Seeing my own state clearly is the reason MoodCast exists.</label>
+
+      <h3>Set a passcode</h3>
+      <p class="muted">The passcode stays on this device and locks your diary from anyone else who opens this browser. There is no account and no server copy, so a forgotten passcode cannot be recovered.</p>
+      <div class="row">
+        <input type="password" id="newPass" inputmode="numeric" autocomplete="new-password" placeholder="Passcode (4+ characters)">
+        <input type="password" id="newPass2" inputmode="numeric" autocomplete="new-password" placeholder="Repeat passcode">
+      </div>
+      <p id="setupError" class="error" hidden></p>
+      <button id="startBtn" class="primary">Start my diary</button>
+    </section>
+  </main>
+
+  <!-- LOCK -->
+  <main id="lock" class="screen" hidden>
+    <section class="card narrow center">
+      <h1>Your diary is locked</h1>
+      <input type="password" id="unlockPass" inputmode="numeric" autocomplete="current-password" placeholder="Passcode">
+      <p id="unlockError" class="error" hidden>That passcode doesn't match.</p>
+      <button id="unlockBtn" class="primary">Unlock</button>
+    </section>
+  </main>
+
+  <!-- APP -->
+  <main id="app" class="screen" hidden>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="today" class="tab active">Today</button>
+      <button role="tab" data-tab="calendar" class="tab">Calendar</button>
+      <button role="tab" data-tab="week" class="tab">Weekly light</button>
+      <button role="tab" data-tab="about" class="tab">About</button>
+    </nav>
+
+    <section id="aiPrep" class="card notice" hidden>
+      <p id="aiPrepText">On-device AI needs a one-time download (a few minutes).</p>
+      <button id="prepBtn" class="secondary">Prepare on-device AI</button>
+      <progress id="prepProgress" max="1" value="0" hidden></progress>
+    </section>
+
+    <!-- TODAY -->
+    <section id="tab-today" class="tabpanel">
+      <div class="card">
+        <div class="row between">
+          <h2>Write your day</h2>
+          <input type="date" id="entryDate">
+        </div>
+        <textarea id="entryText" rows="7" placeholder="What happened today? How did it feel?"></textarea>
+        <div class="row">
+          <button id="readBtn" class="primary">Read my day</button>
+          <button id="saveOnlyBtn" class="ghost">Save without reading</button>
+        </div>
+        <p class="muted small">Read only on this device by Gemini Nano. Your words are never sent to the cloud.</p>
+      </div>
+
+      <div id="resultCard" class="card result" hidden>
+        <div class="weather-line">
+          <span id="resWeatherIcon" class="big-icon"></span>
+          <div>
+            <div id="resWeatherPhrase" class="phrase"></div>
+            <div class="row small">
+              <span id="resDayColor" class="chip"></span>
+              <span id="resTriggers" class="muted"></span>
+            </div>
+          </div>
+        </div>
+        <p id="resNote" class="note"></p>
+        <p id="resHelpline" class="helpline" hidden>If you are in the US, you can call or text 988, the Suicide &amp; Crisis Lifeline, any time.</p>
+        <p class="footer-note">This diary is yours. It was read only on this device, and the AI never passes it to anyone. That also means no one else will notice when you are struggling, so if things feel heavy, reach out to a friend or a counselor yourself.</p>
+        <p id="resSource" class="badge"></p>
+      </div>
+
+      <div id="manualCard" class="card" hidden>
+        <h3>Pick today's weather yourself</h3>
+        <p id="manualReason" class="muted"></p>
+        <div id="manualPicker" class="picker"></div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="tab-calendar" class="tabpanel" hidden>
+      <div class="card">
+        <div class="row between">
+          <button id="prevMonth" class="ghost" aria-label="Previous month">‹</button>
+          <h2 id="monthTitle"></h2>
+          <button id="nextMonth" class="ghost" aria-label="Next month">›</button>
+        </div>
+        <div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        <div id="calGrid" class="cal-grid"></div>
+        <p class="muted small">Tap a day to open it.</p>
+      </div>
+      <div class="card">
+        <h3>This month vs last month</h3>
+        <p class="muted small">Counted on this device.</p>
+        <table id="monthCompare" class="compare"></table>
+      </div>
+    </section>
+
+    <!-- WEEK -->
+    <section id="tab-week" class="tabpanel" hidden>
+      <div class="card">
+        <div class="row between">
+          <button id="prevWeek" class="ghost" aria-label="Previous week">‹</button>
+          <h2 id="weekTitle"></h2>
+          <button id="nextWeek" class="ghost" aria-label="Next week">›</button>
+        </div>
+        <div id="weekDays" class="week-days"></div>
+        <div id="weekLight" class="light"></div>
+        <p class="muted small">The light is computed on this device with simple rules. It describes mood only; it is not a clinical measure and never detects any condition.</p>
+        <details class="small">
+          <summary>How the light works</summary>
+          <p><b>Green:</b> neither rule below applies. <b>Yellow:</b> 3 or more yellow or red days. <b>Red:</b> 3 or more red days, or any day that mentions hurting yourself or not wanting to live.</p>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>Weekly mood forecast</h2>
+        <div id="forecastOff">
+          <p>The forecast is off. When you turn it on:</p>
+          <ul>
+            <li>Only this week's digest is sent, never your diary. You will see every line before it goes, and can edit or remove any of it.</li>
+            <li>We don't ask for your name or an account.</li>
+            <li>Like any internet request, it goes to Google's servers along with standard technical data such as your IP address.</li>
+            <li>The forecast can help you notice patterns you may have missed.</li>
+          </ul>
+          <button id="forecastOnBtn" class="secondary">Turn on the weekly forecast</button>
+        </div>
+        <div id="forecastOn" hidden>
+          <p class="muted">Review the digest. Edit or delete any line. Nothing is sent until you press the button.</p>
+          <div id="digestList"></div>
+          <div class="row">
+            <button id="sendDigestBtn" class="primary">Send digest and write my forecast</button>
+            <button id="forecastOffBtn" class="ghost">Turn off forecast</button>
+          </div>
+          <div id="forecastResult" class="forecast" hidden>
+            <p id="forecastText"></p>
+            <p id="forecastSource" class="badge"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="tab-about" class="tabpanel" hidden>
+      <div class="card">
+        <h2>About MoodCast</h2>
+        <p>MoodCast is a diary with a mirror. It reflects your own state back to you, like a personal mood check-in. It is not a therapist, a crisis service or a monitoring system, and it is not a medical device.</p>
+        <h3>Where your words go</h3>
+        <table class="compare">
+          <tr><th>What</th><th>Where it is processed</th></tr>
+          <tr><td>Your diary entry</td><td>Only on this device (Gemini Nano in Chrome)</td></tr>
+          <tr><td>Weather, day color, note, digest line</td><td>Created on this device, stored in this browser</td></tr>
+          <tr><td>Weekly mood light</td><td>Calculated on this device</td></tr>
+          <tr><td>Weekly forecast</td><td>Only the digest you approve, sent to Gemini in the cloud (falls back to on-device when offline)</td></tr>
+        </table>
+        <h3>Demo</h3>
+        <p class="muted">Load one sample week from a fictional office worker to see the calendar, the weekly light and the forecast without waiting seven days. Sample entries are marked as samples.</p>
+        <div class="row">
+          <button id="demoBtn" class="secondary">Load demo week</button>
+          <button id="clearDemoBtn" class="ghost">Remove demo entries</button>
+        </div>
+        <h3>Your data</h3>
+        <div class="row">
+          <button id="lockBtn" class="ghost">Lock now</button>
+          <button id="wipeBtn" class="danger">Delete all my data</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

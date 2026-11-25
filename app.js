@@ -131,13 +131,25 @@ async function initFirebase() {
   });
 
   // The weekly forecast sees only the approved digest. It prefers the cloud and falls back to the device when offline.
+  const forecastSchema = Schema.object({
+    properties: {
+      oneLine: Schema.string(),
+      storms: Schema.array({ items: Schema.string() }),
+      clearSky: Schema.array({ items: Schema.string() }),
+      pattern: Schema.string(),
+      nextWeek: Schema.string()
+    }
+  });
   forecastModel = getGenerativeModel(ai, {
     mode: InferenceMode.PREFER_IN_CLOUD,
     inCloudParams: {
       model: "gemini-3.5-flash-lite",
-      generationConfig: { maxOutputTokens: 400, temperature: 0.7 }
+      generationConfig: { maxOutputTokens: 500, temperature: 0.4, responseMimeType: "application/json", responseSchema: forecastSchema }
     },
-    onDeviceParams: { createOptions: { expectedInputs: LANG, expectedOutputs: LANG } }
+    onDeviceParams: {
+      createOptions: { expectedInputs: LANG, expectedOutputs: LANG },
+      promptOptions: { responseConstraint: forecastSchema }
+    }
   });
 }
 
@@ -444,7 +456,7 @@ function renderWeek() {
   show($("forecastOn"), !!db.forecastOn);
   if (db.forecastOn) renderDigest(days);
   const saved = db.forecasts[ymd(weekStart)];
-  if (saved) showForecast(saved.text, saved.source); else show($("forecastResult"), false);
+  if (saved) showForecast(saved); else show($("forecastResult"), false);
 }
 
 /* ---------- digest + forecast ---------- */
@@ -478,9 +490,27 @@ function renderDigest(days) {
   });
 }
 
-function showForecast(text, source) {
-  $("forecastText").textContent = text;
-  $("forecastSource").textContent = source === "ON_DEVICE" ? "Written on this device" : "Written in the cloud";
+function showForecast(saved) {
+  const body = $("forecastBody");
+  body.innerHTML = "";
+  const d = saved.data;
+  if (!d) {
+    body.append(el("p", { class: "fc-text" }, saved.text || ""));
+  } else {
+    const section = (icon, title, content) => {
+      if (!content || (Array.isArray(content) && !content.length)) return;
+      const box = el("div", { class: "fc-section" }, el("h4", {}, `${icon} ${title}`));
+      if (Array.isArray(content)) box.append(el("ul", {}, ...content.map((c) => el("li", {}, String(c)))));
+      else box.append(el("p", {}, String(content)));
+      body.append(box);
+    };
+    section("🌤️", "This week in one line", d.oneLine);
+    section("⛈️", "What brought the storms", d.storms);
+    section("☀️", "What cleared the sky", d.clearSky);
+    section("🔍", "A pattern to notice", d.pattern);
+    section("👉", "Next week", d.nextWeek);
+  }
+  $("forecastSource").textContent = saved.source === "ON_DEVICE" ? "Written on this device" : "Written in the cloud";
   show($("forecastResult"));
 }
 
@@ -489,8 +519,16 @@ async function sendDigest() {
   if (!lines.length) { toast("There is nothing to send for this week."); return; }
   if (!forecastModel) { toast(firebaseError ? `Firebase failed to load: ${firebaseError}` : "Still loading, try again in a moment."); return; }
 
-  const prompt = `You write a gentle weekly "mood forecast" for one person, in the friendly voice of a TV weather presenter. You only see a short digest that the person approved; you never see their diary.
-Rules: no diagnosis, no medical or medication advice, no judgment, no names. Point out one or two patterns, for example which triggers came with storms and what came with clear days. Keep it under 120 words. End with one small, concrete step for the coming week, starting with "Next week:". If the digest mentions hurting oneself or not wanting to live, gently say that these thoughts deserve care and that talking with a friend, a counselor or a doctor can help; give no other advice about it.
+  const prompt = `You write a short weekly mood summary for one person. You only see a digest that the person approved; you never see their diary.
+Write in plain, simple, warm English that anyone can understand in 10 seconds. Do not use weather metaphors in your sentences. Be concrete and refer to what actually happened in the digest.
+Rules: no diagnosis, no medical or medication advice, no judgment, no names.
+Return JSON with:
+- oneLine: one sentence that sums up the week, including how many stormy (rain, thunderstorm or fog) and clear (sunny or partly cloudy) days there were and the main cause of the hard days. Max 25 words.
+- storms: 1 to 3 short bullet points (max 14 words each) about what made the hard days hard. Empty if there were no hard days.
+- clearSky: 1 to 3 short bullet points (max 14 words each) about what helped on the better days. Empty if there were none.
+- pattern: one sentence (max 25 words) about a connection the person may not have noticed, for example stress at work followed by poor sleep.
+- nextWeek: one small, concrete step for next week (max 20 words).
+If the digest mentions hurting oneself or not wanting to live, make nextWeek gently say that a friend, a counselor or a doctor can help, and that the person can look up support services where they live.
 
 Digest for the week of ${shortDate(weekStart)}:
 ${lines.join("\n")}`;
@@ -503,11 +541,13 @@ ${lines.join("\n")}`;
       forecastDeviceReady = true;
     }
     const result = await forecastModel.generateContent(prompt);
-    const text = result.response.text().trim();
+    let data;
+    try { data = parseJson(result.response.text()); }
+    catch { throw new Error("The forecast could not be understood. Please try again."); }
     const source = result.response.inferenceSource || "IN_CLOUD";
-    db.forecasts[ymd(weekStart)] = { text, source, at: Date.now() };
+    db.forecasts[ymd(weekStart)] = { data, source, at: Date.now() };
     saveDb();
-    showForecast(text, source);
+    showForecast(db.forecasts[ymd(weekStart)]);
   } catch (err) {
     console.error(err);
     const msg = String(err?.message || err);

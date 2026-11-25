@@ -35,6 +35,7 @@ Read this first. It records what was decided, what is done and what is left, so 
 4. **Weather**: sunny, partly_cloudy, rain, thunderstorm, fog. **Day color** (judged by the on-device AI): green / yellow / red.
 5. **Weekly mood light** (3 colors, computed on device, **cannot be turned off**): red if 3+ red days or any day mentioning hurting oneself / not wanting to live; yellow if 3+ yellow-or-red days; else green. Every light explains itself in one line; a single-day red names the day gently.
 6. **One note per entry, no chat.** Fixed privacy footer under every note (app text, not model text).
+12. **Support wording**: never say "reaching out is up to you" or "you don't have to carry it alone". Say that a friend, a counselor or a doctor can help, and give a direction: look up support services where you live; in the US, call or text 988.
 7. **Not surveillance, not medical.** MoodCast never reports, notifies or contacts anyone. Avoid medical words (diagnose, screening, depression, checkup-as-medical). Use "mood light", "mood check-in", "wellbeing". Heavy entries: acknowledge pain + one line "call or text 988" (US standard chosen for the hackathon).
 8. Age: 18+, phrased as **Google's Gemini API terms require it**, not as MoodCast's own rule.
 9. Hackathon scope: passcode lock screen is in; **encryption of stored entries and an encrypted backup file are "next steps"**, not built.

@@ -99,7 +99,8 @@ progress { width: 100%; }
 .digest-line .row { margin: 4px 0; }
 .digest-line textarea { min-height: 54px; }
 .digest-warn { font-size: .8rem; color: var(--yellow); }
-.forecast { background: var(--accent-soft); padding: 14px; border-radius: 12px; margin-top: 12px; white-space: pre-wrap; }
+.forecast { background: var(--accent-soft); padding: 14px; border-radius: 12px; margin-top: 12px; }
+#forecastText { white-space: pre-wrap; }
 .sample { font-size: .7rem; color: var(--muted); }
 .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: .9rem; max-width: 90%; z-index: 10; }
 @media (max-width: 520px) {

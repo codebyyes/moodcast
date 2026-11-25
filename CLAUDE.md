@@ -53,7 +53,7 @@ Read this first. It records what was decided, what is done and what is left, so 
 - [x] Claude GitHub App has push access to the repo.
 - [x] Code pushed; **GitHub Pages is live** at https://codebyyes.github.io/moodcast/
 - [x] App Check debug token registered in the Firebase console.
-- [ ] Test the cloud forecast on iPad (demo week → Weekly light → turn on forecast → send).
+- [x] Cloud forecast tested on iPad on Nov 25: demo week → yellow light → digest preview (names removed) → forecast written, badge "Written in the cloud". App Check debug token works.
 - [ ] **Sunday Nov 30 on the Mac mini**: Chrome 139+, enable `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, restart, make sure 22 GB free; prepare on-device AI; test reading entries (including a heavy test entry); fix issues.
 - [ ] Record the demo video (under 3 min, English): promise → write → read on device → calendar → weekly light → digest preview → forecast with badge → DevTools Network showing only the digest goes out.
 - [ ] Update the report's "Challenges" section with what really happened; move anything not built to "What's next".

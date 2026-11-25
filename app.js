@@ -204,7 +204,7 @@ function parseJson(text) {
 /* ---------- screens ---------- */
 
 function showScreen(name) {
-  for (const s of ["onboarding", "lock", "app"]) show($(s), s === name);
+  for (const s of ["landing", "onboarding", "lock", "app"]) show($(s), s === name);
 }
 
 function switchTab(name) {
@@ -543,6 +543,8 @@ function clearDemo() {
 /* ---------- wiring ---------- */
 
 function wire() {
+  $("getStartedBtn").addEventListener("click", () => { showScreen("onboarding"); window.scrollTo(0, 0); });
+
   $("startBtn").addEventListener("click", async () => {
     const err = $("setupError");
     const p1 = $("newPass").value, p2 = $("newPass2").value;
@@ -602,7 +604,7 @@ function wire() {
     if (!confirm("Delete every entry, forecast and your passcode from this browser? This cannot be undone.")) return;
     localStorage.removeItem(KEY);
     db = { entries: {}, forecasts: {} };
-    showScreen("onboarding");
+    showScreen("landing");
   });
 }
 
@@ -617,7 +619,7 @@ function enterApp() {
 
 wire();
 $("entryDate").value = ymd(today());
-showScreen(db.setupDone ? "lock" : "onboarding");
+showScreen(db.setupDone ? "lock" : "landing");
 checkDevice().then(updatePrepCard);
 initFirebase().catch((e) => {
   firebaseError = String(e?.message || e);

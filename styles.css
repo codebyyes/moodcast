@@ -107,3 +107,18 @@ progress { width: 100%; }
   .cal-day { min-height: 46px; }
   .cal-day .ic { font-size: 1.1rem; }
 }
+
+/* landing */
+.hero { text-align: center; padding: 48px 16px 24px; }
+.hero-icon { font-size: 4.5rem; line-height: 1; }
+.hero-title { font-size: 2.6rem; margin: 12px 0 4px; letter-spacing: -0.02em; }
+.hero-tagline { font-size: 1.3rem; font-weight: 600; color: var(--accent); margin: 0 0 6px; }
+.hero-sub { font-size: 1.05rem; color: var(--muted); margin: 0; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0 24px; }
+.feature { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; text-align: center; }
+.feature-icon { font-size: 2rem; }
+.feature h3 { margin: 8px 0 6px; }
+.feature p { font-size: .9rem; color: var(--muted); margin: 0; }
+.hero-cta { text-align: center; padding-bottom: 32px; }
+.primary.big { font-size: 1.15rem; padding: 14px 36px; border-radius: 999px; margin-bottom: 10px; }
+@media (max-width: 640px) { .features { grid-template-columns: 1fr; } }

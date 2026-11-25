@@ -24,7 +24,7 @@ MoodCast is a static web app with no build step.
 1. Use **Chrome 139+ on a desktop computer** (Windows 10/11, macOS 13+, Linux) with at least 22 GB free disk space and 16 GB RAM or a GPU with more than 4 GB VRAM.
 2. Open `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, set it to **Enabled**, and restart Chrome.
 3. Open the hosted app: **https://codebyyes.github.io/moodcast/**
-4. Accept the promise, confirm you are 18+, and set a passcode.
+4. Press **Get started**, accept the promise and confirm you are 18+. **Test passcode: `1234`** (pre-filled in this hackathon test version, so you can come back later). If you change it and forget it, use **Start over** on the lock screen; this deletes the entries on that device.
 5. Press **Prepare on-device AI** once (the first download takes a few minutes).
 6. Go to **About → Load demo week** to see the calendar, the weekly light and the forecast right away, or write your own entry and press **Read my day**.
 
@@ -44,6 +44,12 @@ Edit [`firebase-config.js`](firebase-config.js): replace `firebaseConfig` with y
 | Weekly forecast | Only the digest the user approves, sent to Gemini |
 
 MoodCast never reports, notifies or contacts anyone. It is a diary, not a monitoring system.
+
+## What's next
+
+- Encryption of stored entries and an encrypted backup file the user keeps
+- A **recovery code** shown once at setup, so users can regain access after a forgotten passcode without an email address or an account
+- An iOS version with Apple Foundation Models through Firebase AI Logic
 
 ## License
 

@@ -24,7 +24,7 @@ Read this first. It records what was decided, what is done and what is left, so 
 - Hosting plan: **GitHub Pages** → https://codebyyes.github.io/moodcast/ (chosen over Firebase Hosting because the user cannot use a terminal on iPad).
 - Firebase project: `moodcast-dc0c1`, **Spark (free) plan, no credit card**. Web app nickname "MoodCast Web". Config is in `firebase-config.js`.
 - Firebase AI Logic: enabled with **Gemini Developer API** (free tier). AI monitoring turned off. Gemini in Firebase and Google Analytics turned off (privacy).
-- App Check: enforced for AI Logic. The app runs in **debug-token mode**; token is in `firebase-config.js` and must be registered in Firebase console → App Check → Apps → MoodCast Web → ⋮ → Manage debug tokens. Status at last check: **App Check "未註冊" (not registered) — still to do**.
+- App Check: enforced for AI Logic. The app runs in **debug-token mode**; token is in `firebase-config.js` and must be registered in Firebase console → App Check → Apps → MoodCast Web → ⋮ → Manage debug tokens. Debug token "MoodCast hackathon" **registered on Nov 25** (no reCAPTCHA provider registered).
 - Firebase JS SDK loaded from CDN `https://www.gstatic.com/firebasejs/13.4.0/` (hybrid needs 12.5.0+).
 
 ## Product decisions (do not change without asking the user)
@@ -50,9 +50,9 @@ Read this first. It records what was decided, what is done and what is left, so 
 
 ## Remaining steps
 
-- [ ] Give Claude push access to the repo (Claude GitHub App) or upload files by hand.
-- [ ] Push the code; turn on **GitHub Pages** (Settings → Pages → Deploy from branch → main / root).
-- [ ] Register the App Check debug token in the Firebase console.
+- [x] Claude GitHub App has push access to the repo.
+- [x] Code pushed; **GitHub Pages is live** at https://codebyyes.github.io/moodcast/
+- [x] App Check debug token registered in the Firebase console.
 - [ ] Test the cloud forecast on iPad (demo week → Weekly light → turn on forecast → send).
 - [ ] **Sunday Nov 30 on the Mac mini**: Chrome 139+, enable `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, restart, make sure 22 GB free; prepare on-device AI; test reading entries (including a heavy test entry); fix issues.
 - [ ] Record the demo video (under 3 min, English): promise → write → read on device → calendar → weekly light → digest preview → forecast with badge → DevTools Network showing only the digest goes out.
